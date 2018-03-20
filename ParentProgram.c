@@ -5,14 +5,14 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-int main(int argc, char **argv) 
+int main(int argc, char **argv)
 {
 
-    /* Skeleton Code 
+    /* Skeleton Code
      * Define a char pointer, filename, that holds a file name. Initialize filename as "textfile.txt"
      * Check if argument count (argc) is more than one. If it is more than one, then argv[1] is the file name passed as a parameter. Use argv[1] as the filename now, by assigning argv[1] to filename
-     * 
-     * 
+     *
+     *
      * Declare a 1D Character array, 'sentence', to hold the entire content read from the file and a 2D Character array, 'commands' to hold the commands read from the file.
      * Assume there is only one line in the file, with multiple UNIX commands. Each command is separated by a comma.
      * Open the file using fopen function
@@ -43,34 +43,34 @@ int main(int argc, char **argv)
      * End for loop.
      * Print the statement "ParentProgram: Process Complete."
      */
-    //Write your code here
+  //Write your code here
 	//seting the default to textfile.txt
-    char* filename = "textfile.txt";
+  char* filename = "textfile.txt";
 	//checking if there is a file to read from
-    if(argc > 1){
-        filename = argv[1];
-        printf("FILENAME: %s\n",filename);
-    }
+  if(argc > 1){
+      filename = argv[1];
+      printf("FILENAME: %s\n",filename);
+  }
 	//creating a pointer and setting it equal to the begining of the input file
-    FILE *file = fopen(filename, "r");
+  FILE *file = fopen(filename, "r");
 	//case for a null file... exit program with error message
-    if(file == NULL){
-        printf("File opening has failed. Ending program.\n");
-        exit(0);
-    }
+  if(file == NULL){
+      printf("File opening has failed. Ending program.\n");
+      exit(0);
+  }
 	//creating two variables one to keep track of how many characters are in the file
 	//the other to use as a null char indecator
-    int charCounter = 1;
+  int charCounter = 1;
 	int charElement;
-    while((charElement = fgetc(file))){
-	//there are no more valid characters in the file... leave the loop 
-        if(charElement == EOF){
-            break;
-        }
-        charCounter++;
-    }
+  while((charElement = fgetc(file))){
+	//there are no more valid characters in the file... leave the loop
+      if(charElement == EOF){
+          break;
+      }
+      charCounter++;
+  }
 	//declare an array with the size = to the number of chars in the file
-    char sentence [charCounter];
+  char sentence [charCounter];
 	//declare a 2d array with the size = to the number of chars in the file squared
 	char commands[charCounter][charCounter];
 	//rewind sets the pointer back to the begining of the file
@@ -97,6 +97,9 @@ int main(int argc, char **argv)
 		pid_t pid;
 		pid = fork();
 		if(pid > 0){//parent process
+      //HOMEWORK 4 STARTS here
+
+      
 			printf("PARENT PROGRAM: forked process with ID %d.\n",pid);
 			printf("PARENT PROGRAM: waiting for process [%d].\n",pid);
             int waitstatus_v = pid;
@@ -104,20 +107,18 @@ int main(int argc, char **argv)
             WEXITSTATUS(waitstatus_v);
             printf("PARENT PROGRAM: Child process %d returned %d.\n",pid,waitstatus_v);
 		}
-        if(pid == 0){//child process
-            if((execlp("./Executor","Executor", commands[i], NULL)) == -1){
-                printf("PARENT PROGRAM: Child Process Creation failed. Exiting.\n");
-                break;
-            }
-        }
-        if(pid < 0){
-            printf("ERROR WITH FORK PROCESS");
-            exit(0);
-        }
+    if(pid == 0){//child process
+      if((execlp("./Executor","Executor", commands[i], NULL)) == -1){
+        printf("PARENT PROGRAM: Child Process Creation failed. Exiting.\n");
+          break;
+      }
     }
-    printf("PARENT PROGRAM: Process Complete.\n");
+    if(pid < 0){
+      printf("ERROR WITH FORK PROCESS");
+        exit(0);
+    }
+  }
+  printf("PARENT PROGRAM: Process Complete.\n");
 
-    return 0;
+  return 0;
 }
-
-
