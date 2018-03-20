@@ -97,7 +97,6 @@ int main(int argc, char **argv)
 		pid_t pid;
 		pid = fork();
 		if(pid > 0){//parent process
-      //HOMEWORK 4 STARTS here
 
       
 			printf("PARENT PROGRAM: forked process with ID %d.\n",pid);
